@@ -8,7 +8,15 @@ ALTER TABLE IDN_OAUTH2_AUTHORIZATION_CODE MODIFY CALLBACK_URL VARCHAR(2048);
 
 DROP PROCEDURE IF EXISTS add_column_if_not_exists_with_default_val;
 
-CREATE PROCEDURE add_column_if_not_exists_with_default_val(tbl_name VARCHAR(64), clmn_name VARCHAR(64), data_type VARCHAR(64), default_val VARCHAR(64)) BEGIN DECLARE CONTINUE HANDLER FOR SQLEXCEPTION BEGIN END; SET @query = CONCAT('ALTER TABLE ', tbl_name, ' ADD COLUMN ', clmn_name, ' ', data_type, ' NOT NULL default ', default_val); PREPARE statement FROM @query; EXECUTE statement; SET @query = CONCAT('ALTER TABLE ', tbl_name, ' ALTER COLUMN ', clmn_name, ' drop default'); PREPARE statement FROM @query; EXECUTE statement; END;
+CREATE PROCEDURE add_column_if_not_exists_with_default_val(tbl_name VARCHAR(64), clmn_name VARCHAR(64),
+                                                            data_type VARCHAR(64), default_val VARCHAR(64))
+BEGIN
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION BEGIN
+    END;
+    SET @query = CONCAT('ALTER TABLE ', tbl_name, ' ADD COLUMN ', clmn_name, ' ', data_type, ' NOT NULL default ',
+                        default_val);
+    PREPARE statement FROM @query; EXECUTE statement;
+END;
 
 CALL add_column_if_not_exists_with_default_val('IDN_OAUTH2_AUTHORIZATION_CODE', 'IDP_ID', 'int', '-1');
 

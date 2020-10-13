@@ -20,8 +20,6 @@ BEGIN
     SET @query = CONCAT('ALTER TABLE ', tbl_name, ' ADD COLUMN ', clmn_name, ' ', data_type, ' NOT NULL default ',
                         default_val);
     PREPARE statement FROM @query; EXECUTE statement;
-    SET @query = CONCAT('ALTER TABLE ', tbl_name, ' ALTER COLUMN ', clmn_name, ' drop default');
-    PREPARE statement FROM @query; EXECUTE statement;
 END;
 
 CALL add_column_if_not_exists_with_default_val('IDN_OAUTH2_AUTHORIZATION_CODE', 'IDP_ID', 'int', '-1');
